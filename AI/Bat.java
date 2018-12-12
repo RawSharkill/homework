@@ -1,3 +1,4 @@
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -12,8 +13,8 @@ public class Bat {
     double value;
     int fmax=2;
     int fmin=0;
-    double aerfa=0.95;//音强衰减系数
-    double gama=0.05;//频率增加系数
+    double aerfa=0.9;//音强衰减系数
+    double gama=0.95;//频率增加系数
     //脉冲频率
     int rmax=1;
     int rmin=0;
@@ -27,27 +28,28 @@ public class Bat {
         location = new Double[n];
         for(int i=0;i<n;i++)
         {
-            double l=r1.nextDouble()*20-10;
+            double l=r1.nextDouble()*10-5;
             location[i]=l;
         }
 
-        Random r2=new Random();
         vector=new Double[n];
         for(int i=0;i<n;i++){
-            double v=r2.nextDouble()*0.01-0.005;
+            double v=r1.nextDouble()*1  -0.5;
             vector[i]=v;
         }
-        f=r2.nextDouble()*(fmax-fmin)+fmin;
-        r=r2.nextDouble()*(rmax-rmin)+rmin;
-        A=r2.nextDouble()*(amax-amin)+amin;
+        f=r1.nextDouble()*(fmax-fmin)+fmin;
+        r=r1.nextDouble()*(rmax-rmin)+rmin;
+        A=r1.nextDouble()*(amax-amin)+amin;
         value=0;
     }
 
-    void fly(double rand,Double[] Xbest,int n,int t,int iteration){
+    void fly(double w,Double[] Xbest,int n,int t,int iteration){
+        double rand=Math.random();
         f=rand*(fmax-fmin)+fmin;
         for(int i=0;i<n;i++)
         {
-            vector[i]=W(t,iteration)*vector[i]+(Xbest[i]-location[i])*f;
+            vector[i]=w*vector[i]+(Xbest[i]-location[i])*f;
+           // vector[i]=vector[i]+(Xbest[i]-location[i])*f;
             location[i]+=vector[i];
             if(location[i]>4 )
                 location[i]=4.0;
